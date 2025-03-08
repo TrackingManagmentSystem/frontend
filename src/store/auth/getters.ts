@@ -7,7 +7,10 @@ export default {
 
   getUser: (state: AuthState) => {
     if (!state.user && sessionStorage.getItem(`USER`))
-      state.user = sessionStorage.getItem(`USER`) as AuthState['user']
+      state.user = JSON.parse(sessionStorage.getItem(`USER`) as string) as AuthState['user']
+
+    if (!state.token && sessionStorage.getItem(`AUTH_TOKEN`))
+      state.token = sessionStorage.getItem(`AUTH_TOKEN`)
 
     return state?.user
   },

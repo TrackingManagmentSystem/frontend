@@ -69,13 +69,15 @@ export type AxiosWithAuth =  AxiosInstance & { useBearerToken: () => AxiosWithAu
 const axiosWithAuth: AxiosWithOptionalAuth = axios.create({ baseURL: `http://localhost:3000` });
 axiosWithAuth.interceptors.response.use((response) => response, onReject);
 axiosWithAuth.useBearerToken = (): AxiosWithAuth => {
-  axiosWithAuth.interceptors.request.use(
-    (config) => {
-      config.headers['Authorization'] = `Bearer ${Store.state.value.auth.token}`
-      return config
-    },
-    error => Promise.reject(error)
-  );
+  if (axiosWithAuth.interceptors.request.handlers.length === 0) {
+    axiosWithAuth.interceptors.request.use(
+      (config) => {
+        config.headers['Authorization'] = `Bearer ${Store.state.value.auth.token}`
+        return config
+      },
+      error => Promise.reject(error)
+    );
+  }
   return axiosWithAuth as AxiosWithAuth
 }
 

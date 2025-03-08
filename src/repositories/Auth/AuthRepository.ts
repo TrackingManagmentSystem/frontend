@@ -1,15 +1,24 @@
 import { Repository } from '@/repositories/Base/Repository'
 
 export type User = {
-  email: string;
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  document: string;
+
+  email: string;
   password: string;
+  profileId: string;
+
+  country: string;
+  cityState: string;
+  zipCode: string;
+
   profile: {
     id: string;
     name: string;
-  }
-  profileId: string;
+  };
   tokens: {
     accessToken: string;
     expiresAt: string;
@@ -28,6 +37,10 @@ class AuthRepository extends Repository {
 
   login(params: { email: string; password: string; }) {
     return this.$axios.post<{ access_token: string; }>(`${this.endpoint}/login`, params)
+  }
+
+  update(params: Partial<User>) {
+    return this.$axios.useBearerToken().put<User>(`${this.endpoint}/me`, params)
   }
 
   logout() {

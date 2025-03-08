@@ -10,10 +10,12 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueApexCharts from 'vue3-apexcharts'
+import { Store } from './store'
 
 const app = createApp(App)
 
 app.use(router)
 app.use(VueApexCharts)
+app.use(Store)
 
 app.mount('#app')
