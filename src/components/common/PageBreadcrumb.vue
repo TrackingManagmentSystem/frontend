@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
     <h2 class="text-xl font-semibold text-gray-800 dark:text-white/90" x-text="pageTitle">
-      {{ pageTitle }}
+      {{ title }}
     </h2>
     <nav>
       <ol class="flex items-center gap-1.5">
@@ -30,7 +30,7 @@
           </router-link>
         </li>
         <li class="text-sm text-gray-800 dark:text-white/90">
-          {{ pageTitle }}
+          {{ title }}
         </li>
       </ol>
     </nav>
@@ -38,11 +38,20 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { computed, defineProps } from 'vue'
+import { useRoute } from 'vue-router';
 
 interface BreadcrumbProps {
-  pageTitle: string
+  pageTitle?: string
 }
 
-defineProps<BreadcrumbProps>()
+const props = defineProps<BreadcrumbProps>()
+
+const title = computed(() => {
+  if (!props.pageTitle) {
+    const route = useRoute()
+    return route.meta.title
+  }
+  return props.pageTitle
+})
 </script>

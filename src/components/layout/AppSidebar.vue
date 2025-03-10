@@ -240,7 +240,20 @@ const { isExpanded, isMobileOpen, isHovered, openSubmenu } = useSidebar();
 
 const menuGroups = [
   {
-    title: "Menu",
+    title: "Sistema TMS",
+    items: [
+      {
+        name: "Tables",
+        icon: BoxCubeIcon,
+        subItems: [
+          { name: "Orders", path: "/orders" },
+          { name: "Remessas", path: "/shipments" },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Others",
     items: [
       {
         icon: GridIcon,
@@ -278,11 +291,6 @@ const menuGroups = [
           { name: "404 Page", path: "/error-404", pro: false },
         ],
       },
-    ],
-  },
-  {
-    title: "Others",
-    items: [
       {
         icon: PieChartIcon,
         name: "Charts",

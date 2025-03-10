@@ -7,7 +7,10 @@
       :class="[isExpanded || isHovered ? 'lg:ml-[290px]' : 'lg:ml-[90px]']"
     >
       <app-header />
-      <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+      <div
+        class="p-4 mx-auto md:p-6 overflow-x-auto"
+        :class="[isExpanded || isHovered ? 'lg:max-w-[100vw-290px]' : 'lg:max-w-[100vw-90px]']"
+      >
         <slot></slot>
       </div>
     </div>
@@ -21,3 +24,14 @@ import { useSidebar } from '@/composables/useSidebar'
 import Backdrop from './Backdrop.vue'
 const { isExpanded, isHovered } = useSidebar()
 </script>
+
+<style lang="scss" scoped>
+@reference "tailwindcss";
+
+.lg\:max-w-\[100vw-290px\] {
+  max-width: calc(100vw - 290px);
+}
+.lg\:max-w-\[100vw-90px\] {
+  max-width: calc(100vw - 90px);
+}
+</style>
