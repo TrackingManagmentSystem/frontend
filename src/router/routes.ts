@@ -1,5 +1,25 @@
 export default [
   {
+    path: '/orders',
+    name: 'Orders',
+    component: () => import('../views/Order/OrderList.vue'),
+    meta: {
+      title: 'Orders',
+      middleware: [`auth`]
+    },
+  },
+  {
+    path: '/shipments',
+    name: 'Shipments',
+    component: () => import('../views/Order/OrderList.vue'),
+    meta: {
+      title: 'Remessas',
+      middleware: [`auth`]
+    },
+  },
+
+  // Referência
+  {
     path: '/',
     name: 'Ecommerce',
     component: () => import('../views/Ecommerce.vue'),

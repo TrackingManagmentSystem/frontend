@@ -1,7 +1,7 @@
 import type { AxiosRequestConfig } from 'axios'
 import { axiosWithAuth, type AxiosWithAuth } from '../../providers/AxiosProvider'
 
-export class Repository {
+export class Repository<T = unknown> {
   endpoint: string | null = null
   $axios: AxiosWithAuth
 
@@ -9,24 +9,24 @@ export class Repository {
     this.$axios = $axios
   }
 
-  fetchAll (params?: AxiosRequestConfig<any>) {
-    return this.$axios.get(`${this.endpoint}`, { params })
+  fetchAll (params?: AxiosRequestConfig['params']) {
+    return this.$axios.useBearerToken().get<T[]>(`${this.endpoint}s`, { params })
   }
 
   fetch (id: string) {
-    return this.$axios.get(`${this.endpoint}/${id}`)
+    return this.$axios.useBearerToken().get<T>(`${this.endpoint}/${id}`)
   }
 
-  post (params?: AxiosRequestConfig<any>) {
-    return this.$axios.post(`${this.endpoint}`, params)
+  post (data?: AxiosRequestConfig['data']) {
+    return this.$axios.useBearerToken().post<T>(`${this.endpoint}`, { data })
   }
 
-  put (id: string, params?: AxiosRequestConfig<any>) {
-    return this.$axios.put(`${this.endpoint}/${id}`, params)
+  put (id: string, data?: AxiosRequestConfig['data']) {
+    return this.$axios.useBearerToken().put<T>(`${this.endpoint}/${id}`, { data })
   }
 
   delete (id: string) {
-    return this.$axios.delete(`${this.endpoint}/${id}`)
+    return this.$axios.useBearerToken().delete<T>(`${this.endpoint}/${id}`)
   }
 
 }
