@@ -11,7 +11,7 @@ export default [
   {
     path: '/shipments',
     name: 'Shipments',
-    component: () => import('../views/Order/OrderList.vue'),
+    component: () => import('../views/Shipment/ShipmentList.vue'),
     meta: {
       title: 'Remessas',
       middleware: [`auth`]
