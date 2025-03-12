@@ -8,7 +8,7 @@
     >
       <app-header />
       <div
-        class="p-4 mx-auto md:p-6 overflow-x-auto"
+        class="p-4 mx-auto md:p-6"
         :class="[isExpanded || isHovered ? 'lg:max-w-[100vw-290px]' : 'lg:max-w-[100vw-90px]']"
       >
         <slot></slot>

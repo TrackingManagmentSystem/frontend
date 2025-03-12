@@ -43,6 +43,10 @@ interface CostComponents {
   ratio: number;
 }
 
+interface Neighborhood {
+
+}
+
 interface Address {
   id: number;
   countryId: string;
@@ -61,6 +65,7 @@ interface Address {
   comment: string;
   receiverName: string;
   receiverPhone: string;
+  neighborhoodName: string;
 }
 
 interface SnapshotPacking {
@@ -143,6 +148,11 @@ export type Shipment = {
 class ShipmentRepository extends Repository<Shipment> {
   endpoint = 'shipment'
 
+  syncData (shipmentId: string) {
+    return this.$axios
+      .useBearerToken()
+      .get<Shipment>(`${this.endpoint}/${shipmentId}/sync`)
+  }
 }
 
 export default new ShipmentRepository()

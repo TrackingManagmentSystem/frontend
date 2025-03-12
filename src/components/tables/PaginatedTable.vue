@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ComponentCard v-if="props.loading || props.items.length > 0" class-name="overflow-hidden">
+    <ComponentCard v-if="props.loading || props.items.length > 0">
       <OverlayLoading :show="props.loading">
         <BaseTable :columns="props.columns" :items="props.items">
           <template v-for="slotName in Object.keys($slots)" v-slot:[slotName]="slotScope">

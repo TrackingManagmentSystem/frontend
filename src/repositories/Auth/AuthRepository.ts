@@ -36,7 +36,7 @@ class AuthRepository extends Repository {
   }
 
   login(params: { email: string; password: string; }) {
-    return this.$axios.post<{ access_token: string; }>(`${this.endpoint}/login`, params)
+    return this.$axios.post<{ accessToken: string; }>(`${this.endpoint}/login`, params)
   }
 
   update(params: Partial<User>) {

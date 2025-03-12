@@ -1,11 +1,11 @@
 <template>
-  <span :class="[baseStyles, sizeClass, colorStyles]">
+  <span :class="[baseStyles, sizeClass, colorStyles, behaviorStyles]">
     <span v-if="startIcon" class="mr-1">
-      <component :is="startIcon" />
+      <component :is="startIcon" @click="$emit('icon-start-click')" />
     </span>
     <slot></slot>
     <span v-if="endIcon" class="ml-1">
-      <component :is="endIcon" />
+      <component :is="endIcon" @click="$emit('icon-end-click')" />
     </span>
   </span>
 </template>
@@ -23,6 +23,7 @@ interface BadgeProps {
   color?: BadgeColor
   startIcon?: object
   endIcon?: object
+  noBreakLine?: boolean
 }
 
 const props = withDefaults(defineProps<BadgeProps>(), {
@@ -62,4 +63,5 @@ const variants = {
 
 const sizeClass = computed(() => sizeStyles[props.size])
 const colorStyles = computed(() => variants[props.variant][props.color])
+const behaviorStyles = computed(() => props.noBreakLine ? 'whitespace-nowrap' : '')
 </script>

@@ -5,9 +5,9 @@ export async function login(payload: { email: string; password: string; }) {
   this.loading = true
   try {
     await AuthRepository.login(payload)
-      .then(({ data: { access_token } }) => {
-        this.token = access_token;
-        sessionStorage.setItem(`AUTH_TOKEN`, access_token)
+      .then(({ data: { accessToken } }) => {
+        this.token = accessToken;
+        sessionStorage.setItem(`AUTH_TOKEN`, accessToken)
 
         AuthRepository.me()
           .then(({ data }) => {

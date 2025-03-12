@@ -22,7 +22,7 @@
         class="border-t border-gray-100 dark:border-gray-800"
       >
         <td v-for="(col, colIndex) in localColumns" :key="colIndex" class="px-5 py-4 sm:px-6">
-          <slot :name="`cell-${col.key}`" :item="item" :column="col">
+          <slot :name="`cell-${col.key}`" :item="item[col.key]" :column="col">
             <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ item[col.key] }}</p>
           </slot>
         </td>

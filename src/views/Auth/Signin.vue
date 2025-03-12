@@ -294,11 +294,5 @@ const handleSubmit = () => {
     password: password.value,
     keepLoggedIn: keepLoggedIn.value,
   })
-  // Handle form submission
-  console.log('Form submitted', {
-    email: email.value,
-    password: password.value,
-    keepLoggedIn: keepLoggedIn.value,
-  })
 }
 </script>
