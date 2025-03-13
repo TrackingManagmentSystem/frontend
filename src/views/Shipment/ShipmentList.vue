@@ -30,41 +30,7 @@
           <button @click="expandRowBelow">Ação Linha</button>
         </template>
         <template #row-expanded="{ item }">
-          <TabsComponent
-            :tabs="[
-              { title: 'Histórico', },
-              { title: 'Entrega', },
-              { title: 'Remessa', },
-              { title: 'Pedido', },
-            ]"
-            active-tab="Entrega"
-            class="bg-white p-3"
-          >
-            <template #tab-content-Histórico>Histórico</template>
-            <template #tab-content-Entrega>
-              <div class="flex text-gray-500" style="justify-content: space-around;">
-                <div class="flex flex-col">
-                  <span class="text-gray-700">Endereço de Entrega ({{ item.receiverAddress.deliveryPreference }}):</span>
-                  {{ item.receiverAddress.addressLine }}<br>
-                  {{ item.receiverAddress.comment }}<br>
-                  {{ item.receiverAddress.stateName }}<br>
-                  {{ item.receiverAddress.cityName }}<br>
-                  {{ item.receiverAddress.neighborhoodName }}<br>
-                  {{ item.receiverAddress.streetName }}<br>
-                  {{ item.receiverAddress.streetNumber }}<br>
-                  {{ item.receiverAddress.zipCode }}<br>
-                </div>
-
-                <div class="flex flex-col">
-                  <span class="text-gray-700">Destinatário:</span>
-                  {{ item.receiverAddress.receiverName }}<br>
-                  {{ item.receiverAddress.receiverPhone }}<br>
-                </div>
-              </div>
-            </template>
-            <template #tab-content-Remessa>Remessa</template>
-            <template #tab-content-Pedido>Pedido</template>
-          </TabsComponent>
+          <ShipmentDetail :item="item" />
         </template>
         </PaginatedTable>
     </div>
@@ -85,9 +51,11 @@ import PaginatedTable from "@/components/tables/PaginatedTable.vue";
 import type { Column } from "@/components/tables/types";
 import { computed, ref } from "vue";
 import Badge from "@/components/ui/Badge.vue";
-import { getStatusLabel } from "@/utils/parser";
+import { parseDateTimeString, parseMoney } from "@/utils/parser";
 import ECommerceConsult from "./Modal/ECommerceConsult.vue";
-import TabsComponent from "@/components/tabs/TabsComponent.vue";
+import type { Shipment } from "@/repositories/Shipment/ShipmentRepository";
+import { getStatusLabel, parseAddress, parseStatusHistory, translateLogistic } from "@/utils/parser/shipment";
+import ShipmentDetail from "./ShipmentDetail.vue";
 
 const shipmentStore = useShipmentStore()
 const { list, loading } = storeToRefs(shipmentStore)
@@ -106,53 +74,54 @@ const columns: Column[] = [
   Consultar Ecommerce
  */
 
-const getDateTimeString = (dateTime: string, options?: Intl.DateTimeFormatOptions) => {
-  const date = new Date(dateTime);
-  const defaultDateOptions: Intl.DateTimeFormatOptions = {
-    weekday: "short", // Thu
-    day: "2-digit",   // 18
-    month: "short",   // Mar
-  };
-
-  const defaultTimeOptions: Intl.DateTimeFormatOptions = {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true, // Use AM/PM format
-  };
-
-  return {
-    date: date.toLocaleDateString("pt-Br", options ?? defaultDateOptions).replace(",", ""),
-    time: date.toLocaleTimeString("pt-Br", options ?? defaultTimeOptions),
+export type ShipmentListItem = Shipment & {
+  seller: string;
+  reciever: {
+    place: string;
+    estimatedDelivery: { date: string; time: string; } | string;
   }
-}
-
-const getLogistic = (type: string): string => {
-  const logisticType = {
-    drop_off: 'Mercado Envios',
-    xd_drop_off: 'Mercado Envios Coletas e Places',
-    self_service: 'Mercado Envios Flex',
-    fulfillment: 'Mercado Envios Full',
-  };
-  return logisticType[type] as string;
+  receiverAddress: Shipment['receiverAddress'] & {
+    translated: Record<string, string>;
+  }
+  senderAddress: Shipment['senderAddress'] & {
+    translated: Record<string, string>;
+  }
+  statusHistory: {
+    date: string | null;
+    time: string | null;
+    label: string;
+  }[]
+  dateCreated: { date: string; time: string; };
+  lastUpdated: { date: string; time: string; };
+  cost: string;
 }
 
 const items = computed(() => {
   return list.value.map(shipment => {
     return {
       ...shipment,
-      // dateCreated: getDateTimeString(shipment.dateCreated),
-      // logisticType: getLogistic(shipment.logisticType),
       seller: shipment.order.seller.nickname,
       receiver: {
         place: `${shipment.receiverAddress.cityName} ${shipment.receiverAddress.neighborhoodName}`,
         estimatedDelivery: shipment.shippingOption.estimatedDeliveryTime.date
-          ? getDateTimeString(shipment.shippingOption.estimatedDeliveryTime.date)
+          ? parseDateTimeString(shipment.shippingOption.estimatedDeliveryTime.date)
           : '',
       },
       status: getStatusLabel(shipment.status),
-      // cost: Number(shipment.shippingOption.cost).toLocaleString(
-      //   'pt-BR', { style: 'currency', currency: 'BRL' }
-      // ),
+
+      receiverAddress: {
+        ...shipment.receiverAddress,
+        translated: parseAddress(shipment.receiverAddress)
+      },
+      senderAddress: {
+        ...shipment.senderAddress,
+        translated: parseAddress(shipment.senderAddress)
+      },
+      statusHistory: parseStatusHistory(shipment.statusHistory),
+      dateCreated: parseDateTimeString(shipment.dateCreated),
+      lastUpdated: parseDateTimeString(shipment.lastUpdated),
+      logisticType: translateLogistic(shipment.logisticType),
+      cost: parseMoney(shipment.shippingOption.cost),
     }
   })
 })
