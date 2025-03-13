@@ -6,7 +6,7 @@
           :columns="columns"
           :items="items"
           :loading="loading"
-          textEmpty="Nenhuma Ordem Encontrada"
+          textEmpty="Nenhum Pedido Encontrado"
         />
     </div>
   </AdminLayout>

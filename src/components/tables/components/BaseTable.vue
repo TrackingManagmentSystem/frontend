@@ -1,7 +1,8 @@
 <template>
   <table class="min-w-full">
     <thead>
-      <tr class="border-b border-gray-200 dark:border-gray-700">
+      <!-- <tr class="border-b border-gray-200 dark:border-gray-700"> -->
+      <tr class="border-gray-100 border-y bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
         <th
           v-for="(col, index) in localColumns"
           :key="index"
@@ -16,23 +17,32 @@
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-      <tr
-        v-for="(item, rowIndex) in items"
-        :key="rowIndex"
-        class="border-t border-gray-100 dark:border-gray-800"
-      >
-        <td v-for="(col, colIndex) in localColumns" :key="colIndex" class="px-5 py-4 sm:px-6">
-          <slot :name="`cell-${col.key}`" :item="item[col.key]" :column="col">
-            <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ item[col.key] }}</p>
-          </slot>
-        </td>
-      </tr>
+      <template v-for="(item, rowIndex) in items" :key="rowIndex">
+          <tr class="border-t border-gray-100 dark:border-gray-800">
+            <td v-for="(col, colIndex) in localColumns" :key="colIndex" class="px-5 py-4 sm:px-6">
+              <slot
+                :name="`cell-${col.key}`"
+                :item="item[col.key]"
+                :column="col"
+                :expand-row-below="() => toggleExpand(rowIndex)"
+              >
+                <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ item[col.key] }}</p>
+              </slot>
+            </td>
+          </tr>
+          <!-- Linha expandida -->
+          <tr v-if="expandedRows.has(rowIndex)" class="bg-gray-50 dark:bg-gray-900">
+            <td :colspan="localColumns.length" class="p-4">
+              <slot name="row-expanded" :item="item" />
+            </td>
+          </tr>
+      </template>
     </tbody>
   </table>
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps } from 'vue';
+import { computed, defineProps, ref } from 'vue';
 import type { Column } from '../types';
 
 const props = defineProps<{
@@ -57,5 +67,16 @@ const localColumns = computed<Column[]>(() => {
     };
   })
 
-})
+});
+
+// Controla quais linhas estão expandidas
+const expandedRows = ref(new Set<number>());
+
+const toggleExpand = (rowIndex: number) => {
+  if (expandedRows.value.has(rowIndex)) {
+    expandedRows.value.delete(rowIndex);
+  } else {
+    expandedRows.value.add(rowIndex);
+  }
+};
 </script>

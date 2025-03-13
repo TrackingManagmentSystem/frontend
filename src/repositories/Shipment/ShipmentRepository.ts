@@ -1,4 +1,5 @@
 import { Repository } from '@/repositories/Base/Repository'
+import type { Order } from '../Order/OrderRepository';
 
 interface EstimatedDeliveryTime {
   date: string;
@@ -143,6 +144,7 @@ export type Shipment = {
   snapshotPacking: SnapshotPacking;
   statusHistory: StatusHistory;
   shippingItems: ShippingItem[];
+  order: Order;
 }
 
 class ShipmentRepository extends Repository<Shipment> {

@@ -6,56 +6,65 @@
           :columns="columns"
           :items="items"
           :loading="loading"
-          textEmpty="Nenhuma Ordem Encontrada"
+          textEmpty="Nenhuma Remessa Encontrada"
         >
-        <template #cell-shipment="{ item }">
-          <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-            <span class="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-              Remessa:
-            </span>
-            {{ item?.shippingId }}<br>
-            <span class="block font-medium text-gray-800 text-theme-sm dark:text-white/90 mt-2">
-              Losística:
-            </span>
-            {{ item?.logisticType }}<br>
-            <span class="block font-medium text-gray-800 text-theme-sm dark:text-white/90 mt-2">
-              Dt Criação:
-            </span>
-            {{ item?.dateCreated }}
-          </p>
-        </template>
-        <template #cell-sender="{ item }">
-          <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-            {{ `${item?.cityName} ${item?.zipCode}` }}
-          </p>
-        </template>
         <template #cell-receiver="{ item }">
           <p class="text-gray-500 text-theme-sm dark:text-gray-400">
             <span class="block font-medium text-gray-800 text-theme-sm dark:text-white/90 mt-2">
-              Destinatário:
+              {{ item?.place }}
             </span>
-            {{ item?.name }}<br>
-            <span class="block font-medium text-gray-800 text-theme-sm dark:text-white/90 mt-2">
-              Local:
+            <span class="mb-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
+              {{ item.estimatedDelivery.date }}
             </span>
-            {{ item?.place }}<br>
-            <span class="block font-medium text-gray-800 text-theme-sm dark:text-white/90 mt-2">
-              Dt. Prevista:
+            <span class="text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+              {{ item.estimatedDelivery.time }}
             </span>
-            {{ item?.estimatedDelivery }}
           </p>
         </template>
         <template #cell-status="{ item }">
-          <DropdownMenu :menuItems="item.dropdown">
-            <template #icon>
-              <Badge color="info" no-break-line>
-                {{ item.status }}
-              </Badge>
-            </template>
-          </DropdownMenu>
+          <Badge color="info" no-break-line>
+            {{ item }}
+          </Badge>
         </template>
-        <template #cell-actions>
-          <button>Ação</button>
+        <template #cell-actions="{ expandRowBelow }">
+          <button @click="expandRowBelow">Ação Linha</button>
+        </template>
+        <template #row-expanded="{ item }">
+          <TabsComponent
+            :tabs="[
+              { title: 'Histórico', },
+              { title: 'Entrega', },
+              { title: 'Remessa', },
+              { title: 'Pedido', },
+            ]"
+            active-tab="Entrega"
+            class="bg-white p-3"
+          >
+            <template #tab-content-Histórico>Histórico</template>
+            <template #tab-content-Entrega>
+              <div class="flex text-gray-500" style="justify-content: space-around;">
+                <div class="flex flex-col">
+                  <span class="text-gray-700">Endereço de Entrega ({{ item.receiverAddress.deliveryPreference }}):</span>
+                  {{ item.receiverAddress.addressLine }}<br>
+                  {{ item.receiverAddress.comment }}<br>
+                  {{ item.receiverAddress.stateName }}<br>
+                  {{ item.receiverAddress.cityName }}<br>
+                  {{ item.receiverAddress.neighborhoodName }}<br>
+                  {{ item.receiverAddress.streetName }}<br>
+                  {{ item.receiverAddress.streetNumber }}<br>
+                  {{ item.receiverAddress.zipCode }}<br>
+                </div>
+
+                <div class="flex flex-col">
+                  <span class="text-gray-700">Destinatário:</span>
+                  {{ item.receiverAddress.receiverName }}<br>
+                  {{ item.receiverAddress.receiverPhone }}<br>
+                </div>
+              </div>
+            </template>
+            <template #tab-content-Remessa>Remessa</template>
+            <template #tab-content-Pedido>Pedido</template>
+          </TabsComponent>
         </template>
         </PaginatedTable>
     </div>
@@ -77,37 +86,19 @@ import type { Column } from "@/components/tables/types";
 import { computed, ref } from "vue";
 import Badge from "@/components/ui/Badge.vue";
 import { getStatusLabel } from "@/utils/parser";
-import DropdownMenu from "@/components/common/DropdownMenu.vue";
 import ECommerceConsult from "./Modal/ECommerceConsult.vue";
+import TabsComponent from "@/components/tabs/TabsComponent.vue";
 
 const shipmentStore = useShipmentStore()
 const { list, loading } = storeToRefs(shipmentStore)
 const eCommerceConsultId = ref<string | undefined>(undefined)
 
 const columns: Column[] = [
-  { key: 'shipment', label: 'Remessa' },
-  { key: 'sender', label: 'Cliente' },
+  { key: 'id', label: 'Remessa' },
+  { key: 'seller', label: 'Cliente' },
   { key: 'receiver', label: 'Entrega' },
-  { key: 'cost', label: 'Custo de Frete' },
   { key: 'status', label: 'Status' },
-  { key: 'lastUpdated', label: 'Ultima Atualização' },
   { key: 'actions', label: 'Ações' },
-  { key: 'subStatus', label: 'Sub-Status	' },
-
-  { key: 'subStatusa', label: 'Sub-Status	' },
-  { key: 'subStatusas', label: 'Sub-Status	' },
-  { key: 's', label: 'Sub-Status	' },
-  { key: 'sa', label: 'Sub-Status	' },
-  { key: 'sasadsdfdasd', label: 'Subasdfasdfasdf-Status	' },
-  { key: 'sasdafaaaaadasd', label: 'Sub-asfdasdfStatus	' },
-  { key: 'sasdfssaaaadasd', label: 'Suasdfasdfb-Status	' },
-  { key: 'sasdfdassd', label: 'Sub-asdfasdfStatus	' },
-  { key: 'sasdfdassd', label: 'Sub-asdfasdfStatus	' },
-  { key: 'sasdfdssasd', label: 'Subasdfasdf-Status	' },
-  { key: 'sasdddfdasd', label: 'Subasdasdf-Status	' },
-  { key: 'sasdfdasd', label: 'Sub-Status	' },
-  { key: 'sasdfdddasd', label: 'Sub-Status	' },
-  { key: 'sasdffffdasd', label: 'Sub-Status	' },
 ];
 
 /**
@@ -115,14 +106,24 @@ const columns: Column[] = [
   Consultar Ecommerce
  */
 
-const getDateTimeString = (dateTime: string) => {
+const getDateTimeString = (dateTime: string, options?: Intl.DateTimeFormatOptions) => {
   const date = new Date(dateTime);
-  const options = {
-    dateStyle: "short",
-    timeStyle: "short",
-    timeZone: "America/Campo_Grande"
+  const defaultDateOptions: Intl.DateTimeFormatOptions = {
+    weekday: "short", // Thu
+    day: "2-digit",   // 18
+    month: "short",   // Mar
   };
-  return `${date.toLocaleDateString('pt-Br')} ${date.toLocaleTimeString('pt-Br')}`
+
+  const defaultTimeOptions: Intl.DateTimeFormatOptions = {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true, // Use AM/PM format
+  };
+
+  return {
+    date: date.toLocaleDateString("pt-Br", options ?? defaultDateOptions).replace(",", ""),
+    time: date.toLocaleTimeString("pt-Br", options ?? defaultTimeOptions),
+  }
 }
 
 const getLogistic = (type: string): string => {
@@ -138,43 +139,20 @@ const getLogistic = (type: string): string => {
 const items = computed(() => {
   return list.value.map(shipment => {
     return {
-      shipment: {
-        shippingId: shipment.id,
-        dateCreated: getDateTimeString(shipment.dateCreated),
-        logisticType: getLogistic(shipment.logisticType),
-      },
-      order_data: {
-        orderId: shipment.orderId,
-      },
-      sender: shipment.senderAddress,
+      ...shipment,
+      // dateCreated: getDateTimeString(shipment.dateCreated),
+      // logisticType: getLogistic(shipment.logisticType),
+      seller: shipment.order.seller.nickname,
       receiver: {
-        name: shipment.receiverAddress.receiverName,
         place: `${shipment.receiverAddress.cityName} ${shipment.receiverAddress.neighborhoodName}`,
         estimatedDelivery: shipment.shippingOption.estimatedDeliveryTime.date
           ? getDateTimeString(shipment.shippingOption.estimatedDeliveryTime.date)
           : '',
       },
-      cost: Number(shipment.shippingOption.cost).toLocaleString(
-        'pt-BR', { style: 'currency', currency: 'BRL' }
-      ),
-      status: {
-        status: getStatusLabel(shipment.status),
-        dropdown: [
-          {
-            label: getStatusLabel(shipment.subStatus),
-          },
-          {
-            label: getDateTimeString(shipment.lastUpdated),
-          },
-          {
-            label: `Consultar Ecommerce`,
-            onClick: () => {
-              console.log('shipment.id :>> ', shipment.id);
-              eCommerceConsultId.value = shipment.id.toString();
-            }
-          }
-        ]
-      }
+      status: getStatusLabel(shipment.status),
+      // cost: Number(shipment.shippingOption.cost).toLocaleString(
+      //   'pt-BR', { style: 'currency', currency: 'BRL' }
+      // ),
     }
   })
 })

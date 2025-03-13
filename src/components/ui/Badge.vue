@@ -10,12 +10,14 @@
   </span>
 </template>
 
+<script lang="ts">
+export type BadgeVariant = 'light' | 'solid'
+export type BadgeSize = 'sm' | 'md'
+export type BadgeColor = 'primary' | 'success' | 'error' | 'warning' | 'info' | 'light' | 'dark'
+</script>
+
 <script setup lang="ts">
 import { computed } from 'vue'
-
-type BadgeVariant = 'light' | 'solid'
-type BadgeSize = 'sm' | 'md'
-type BadgeColor = 'primary' | 'success' | 'error' | 'warning' | 'info' | 'light' | 'dark'
 
 interface BadgeProps {
   variant?: BadgeVariant
