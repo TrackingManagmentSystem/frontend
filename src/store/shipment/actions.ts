@@ -19,7 +19,14 @@ export async function syncShipment(shipmentId: string) {
   try {
     await ShipmentRepository.syncData(shipmentId)
       .then(({ data }) => {
-        this.actual = data;
+        if (this.list.length > 0) {
+          this.list = this.list.map(shipment => {
+            if (shipment.id.toString() === shipmentId) {
+              return data;
+            }
+            return shipment;
+          })
+        }
       })
   } catch (error) {
     console.log('error :>> ', error);

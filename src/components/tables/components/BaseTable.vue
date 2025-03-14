@@ -69,7 +69,6 @@ const localColumns = computed<Column[]>(() => {
 
 });
 
-// Controla quais linhas estão expandidas
 const expandedRows = ref(new Set<number>());
 
 const toggleExpand = (rowIndex: number) => {

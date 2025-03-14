@@ -1,5 +1,5 @@
 import type { Shipment } from '@/repositories/Shipment/ShipmentRepository'
-import { parseDateTimeString } from '../parser'
+import { parseDateTimeString, parseMoney } from '../parser'
 
 const statusTranslations = {
   to_be_agreed: 'A ser acordado',
@@ -199,4 +199,56 @@ export const translateLogistic = (type: string): string => {
     fulfillment: 'Mercado Envios Full',
   }
   return logisticType[type] as string
+}
+
+export type ShipmentListItem =
+  Omit<Shipment, 'statusHistory' | 'dateCreated' | 'lastUpdated'>
+  & {
+    seller: string;
+    receiver: {
+      place: string;
+      estimatedDelivery: { date: string; time: string; } | string;
+    }
+    receiverAddress: Shipment['receiverAddress'] & {
+      translated: { label: string; value: string; }[];
+    }
+    senderAddress: Shipment['senderAddress'] & {
+      translated: { label: string; value: string; }[];
+    }
+    statusHistory: {
+      date: string | null;
+      time: string | null;
+      label: string;
+    }[]
+    dateCreated: { date: string; time: string; };
+    lastUpdated: { date: string; time: string; };
+    cost: string;
+  }
+
+export const parseShipment = (shipment: Shipment): ShipmentListItem => {
+  return {
+    ...shipment,
+    seller: shipment.order.seller.nickname,
+    receiver: {
+      place: `${shipment.receiverAddress.cityName} ${shipment.receiverAddress.neighborhoodName}`,
+      estimatedDelivery: shipment.shippingOption.estimatedDeliveryTime.date
+        ? parseDateTimeString(shipment.shippingOption.estimatedDeliveryTime.date)
+        : '',
+    },
+    status: getStatusLabel(shipment.status),
+
+    receiverAddress: {
+      ...shipment.receiverAddress,
+      translated: parseAddress(shipment.receiverAddress)
+    },
+    senderAddress: {
+      ...shipment.senderAddress,
+      translated: parseAddress(shipment.senderAddress)
+    },
+    statusHistory: parseStatusHistory(shipment.statusHistory),
+    dateCreated: parseDateTimeString(shipment.dateCreated),
+    lastUpdated: parseDateTimeString(shipment.lastUpdated),
+    logisticType: translateLogistic(shipment.logisticType),
+    cost: parseMoney(shipment.shippingOption.cost),
+  }
 }

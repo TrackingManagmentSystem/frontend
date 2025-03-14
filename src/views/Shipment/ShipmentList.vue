@@ -6,6 +6,7 @@
           :columns="columns"
           :items="items"
           :loading="loading"
+          title="Lista"
           textEmpty="Nenhuma Remessa Encontrada"
         >
         <template #cell-receiver="{ item }">
@@ -27,12 +28,12 @@
           </Badge>
         </template>
         <template #cell-actions="{ expandRowBelow }">
-          <button @click="expandRowBelow">Ação Linha</button>
+          <Button @click="expandRowBelow" size="xs">Ver Detalhes</Button>
         </template>
         <template #row-expanded="{ item }">
           <ShipmentDetail :item="item" />
         </template>
-        </PaginatedTable>
+      </PaginatedTable>
     </div>
 
     <ECommerceConsult
@@ -43,19 +44,20 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from "pinia";
+import { computed, ref } from "vue";
+import type { Shipment } from "@/repositories/Shipment/ShipmentRepository";
+import { useShipmentStore } from "@/store/shipment";
+import { parseDateTimeString, parseMoney } from "@/utils/parser";
+import { getStatusLabel, parseAddress, parseShipment, parseStatusHistory, translateLogistic } from "@/utils/parser/shipment";
+import type { Column } from "@/components/tables/types";
+import Badge from "@/components/ui/Badge.vue";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb.vue";
 import AdminLayout from "@/components/layout/AdminLayout.vue";
-import { storeToRefs } from "pinia";
-import { useShipmentStore } from "@/store/shipment";
 import PaginatedTable from "@/components/tables/PaginatedTable.vue";
-import type { Column } from "@/components/tables/types";
-import { computed, ref } from "vue";
-import Badge from "@/components/ui/Badge.vue";
-import { parseDateTimeString, parseMoney } from "@/utils/parser";
 import ECommerceConsult from "./Modal/ECommerceConsult.vue";
-import type { Shipment } from "@/repositories/Shipment/ShipmentRepository";
-import { getStatusLabel, parseAddress, parseStatusHistory, translateLogistic } from "@/utils/parser/shipment";
 import ShipmentDetail from "./ShipmentDetail.vue";
+import Button from "@/components/ui/Button.vue";
 
 const shipmentStore = useShipmentStore()
 const { list, loading } = storeToRefs(shipmentStore)
@@ -68,63 +70,7 @@ const columns: Column[] = [
   { key: 'status', label: 'Status' },
   { key: 'actions', label: 'Ações' },
 ];
-
-/**
-  Etiqueta Ecommerce
-  Consultar Ecommerce
- */
-
-export type ShipmentListItem = Shipment & {
-  seller: string;
-  reciever: {
-    place: string;
-    estimatedDelivery: { date: string; time: string; } | string;
-  }
-  receiverAddress: Shipment['receiverAddress'] & {
-    translated: Record<string, string>;
-  }
-  senderAddress: Shipment['senderAddress'] & {
-    translated: Record<string, string>;
-  }
-  statusHistory: {
-    date: string | null;
-    time: string | null;
-    label: string;
-  }[]
-  dateCreated: { date: string; time: string; };
-  lastUpdated: { date: string; time: string; };
-  cost: string;
-}
-
-const items = computed(() => {
-  return list.value.map(shipment => {
-    return {
-      ...shipment,
-      seller: shipment.order.seller.nickname,
-      receiver: {
-        place: `${shipment.receiverAddress.cityName} ${shipment.receiverAddress.neighborhoodName}`,
-        estimatedDelivery: shipment.shippingOption.estimatedDeliveryTime.date
-          ? parseDateTimeString(shipment.shippingOption.estimatedDeliveryTime.date)
-          : '',
-      },
-      status: getStatusLabel(shipment.status),
-
-      receiverAddress: {
-        ...shipment.receiverAddress,
-        translated: parseAddress(shipment.receiverAddress)
-      },
-      senderAddress: {
-        ...shipment.senderAddress,
-        translated: parseAddress(shipment.senderAddress)
-      },
-      statusHistory: parseStatusHistory(shipment.statusHistory),
-      dateCreated: parseDateTimeString(shipment.dateCreated),
-      lastUpdated: parseDateTimeString(shipment.lastUpdated),
-      logisticType: translateLogistic(shipment.logisticType),
-      cost: parseMoney(shipment.shippingOption.cost),
-    }
-  })
-})
+const items = computed(() => list.value.map(parseShipment))
 
 shipmentStore.loadList();
 </script>
