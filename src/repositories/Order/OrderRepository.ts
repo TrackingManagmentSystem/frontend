@@ -52,6 +52,9 @@ export type Order = {
 class OrderRepository extends Repository<Order> {
   endpoint = 'order'
 
+  sync() {
+    return this.$axios.useBearerToken().post(`${this.endpoint}s/sync`)
+  }
 }
 
 export default new OrderRepository()

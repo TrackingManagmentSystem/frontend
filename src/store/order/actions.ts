@@ -17,3 +17,16 @@ export async function loadList() {
     this.loading = false
   }
 }
+
+export async function sync() {
+  this.loading = true
+  try {
+    await OrderRepository.sync().then(({ data }) => {
+      console.log('data :>> ', data);
+    })
+  } catch (error) {
+    console.log('error :>> ', error);
+  } finally {
+    this.loading = false
+  }
+}

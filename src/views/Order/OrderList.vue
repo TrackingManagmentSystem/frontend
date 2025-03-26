@@ -7,7 +7,11 @@
           :items="items"
           :loading="loading"
           textEmpty="Nenhum Pedido Encontrado"
-        />
+        >
+          <template v-slot:empty-button>
+            <Button size="sm" @click="handleSyncOrders">Sincronizar ordens</Button>
+          </template>
+        </PaginatedTable>
     </div>
   </AdminLayout>
 </template>
@@ -15,6 +19,7 @@
 <script lang="ts" setup>
 import PageBreadcrumb from "@/components/common/PageBreadcrumb.vue";
 import AdminLayout from "@/components/layout/AdminLayout.vue";
+import Button from "@/components/ui/Button.vue";
 import { useOrderStore } from "@/store/order";
 import { storeToRefs } from "pinia";
 import PaginatedTable from "@/components/tables/PaginatedTable.vue";
@@ -54,6 +59,11 @@ const items = computed(() => {
     }
   })
 })
+
+const handleSyncOrders = async () => {
+  await orderStore.sync();
+  orderStore.loadList();
+}
 
 orderStore.loadList();
 </script>

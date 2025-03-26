@@ -30,12 +30,14 @@
     </OverlayLoading>
   </div>
   <EmptyData v-else :title="props.textEmpty">
-    <router-link
-      v-if="props.routeNameNew && props.textNew" :to="{ name: routeNameNew }"
-      class="btn btn-primary"
-    >
-      {{ textNew }}
-    </router-link>
+    <slot name="empty-button">
+      <router-link
+        v-if="props.routeNameNew && props.textNew" :to="{ name: routeNameNew }"
+        class="btn btn-primary"
+      >
+        {{ textNew }}
+      </router-link>
+    </slot>
   </EmptyData>
 </template>
 
@@ -49,7 +51,6 @@ import Button from "@/components/ui/Button.vue";
 import ControlsIcon from "@/icons/ControlsIcon.vue";
 import type { PaginationDto, PaginationResponse } from "@/repositories/Base/pagination";
 import type { Column } from "./types";
-import { onMounted } from "vue";
 
 const emit = defineEmits<{
   (e: 'paginate', data: PaginationDto): void
@@ -72,7 +73,4 @@ const props = withDefaults(
     loading: false,
   }
 );
-onMounted(() => {
-  console.log(`MOUINTE`);
-})
 </script>
