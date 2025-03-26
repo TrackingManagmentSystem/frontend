@@ -23,7 +23,7 @@
           <span>{{ props.item.receiverAddress.receiverPhone }}</span>
         </div>
         <div class="row-span-2 rounded-lg bg-gray-50 dark:bg-white/[0.03] dark:border-gray-800 p-2 flex flex-col">
-          <div class="flex justify-between mb-2">
+          <div class="flex justify-between items-center mb-2">
             <div>
               <span class="text-gray-700 mb-1">Histórico Plataforma:</span>
               <span class="block text-gray-500 text-theme-xs dark:text-gray-400">

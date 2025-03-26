@@ -11,11 +11,11 @@
     :disabled="disabled"
   >
     <span v-if="startIcon" class="flex items-center">
-      <component :is="startIcon" />
+      <component :height="iconSize[size]" :width="iconSize[size]" :is="startIcon" />
     </span>
     <slot></slot>
     <span v-if="endIcon" class="flex items-center">
-      <component :is="endIcon" />
+      <component :height="iconSize[size]" :width="iconSize[size]" :is="endIcon" />
     </span>
   </button>
 </template>
@@ -40,10 +40,16 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   disabled: false,
 })
 
+const iconSize = {
+  xs: '15',
+  sm: '17',
+  md: '20',
+}
+
 const sizeClasses = {
-  xs: 'px-2 py-1 text-sm',
-  sm: 'px-4 py-3 text-sm',
-  md: 'px-5 py-3.5 text-sm',
+  xs: 'px-2 py-1 text-xs',
+  sm: 'px-4 py-2.5 text-sm',
+  md: 'px-5 py-3.5',
 }
 
 const variantClasses = {
