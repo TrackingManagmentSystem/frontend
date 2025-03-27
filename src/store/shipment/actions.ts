@@ -14,10 +14,10 @@ export async function loadList() {
   this.loading = false
 }
 
-export async function syncShipment(shipmentId: string) {
+export async function sync(shipmentId: string) {
   this.loading = true
   try {
-    await ShipmentRepository.syncData(shipmentId)
+    await ShipmentRepository.sync(shipmentId)
       .then(({ data }) => {
         if (this.list.length > 0) {
           this.list = this.list.map(shipment => {
