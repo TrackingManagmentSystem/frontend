@@ -1,5 +1,15 @@
 import Router from "@/router";
 import AuthRepository, { type User } from "../../repositories/Auth/AuthRepository";
+import AuthorizationRepository from "@/repositories/Auth/AuthorizationRepository";
+
+export type ActionsType = {
+  login: (payload: { email: string; password: string; }) => Promise<void>;
+  updateUser: (payload: Partial<User>) => Promise<void>;
+  logout: () => Promise<void>;
+  getMercadoLivreAuthorizationLink: () => Promise<{ authorization_url: string; }>;
+  getShopeeAuthorizationLink: () => Promise<{ authorization_url: string; }>;
+};
+
 
 export async function login(payload: { email: string; password: string; }) {
   this.loading = true
@@ -31,6 +41,7 @@ export async function login(payload: { email: string; password: string; }) {
   }
   this.loading = false
 }
+
 export async function updateUser(payload: Partial<User>) {
   this.loading = true
   try {
@@ -64,3 +75,33 @@ export async function logout() {
       // this.router.push({ name: constants.routes.login.name })
     })
 }
+
+export async function getMercadoLivreAuthorizationLink() {
+  this.loading = true
+  try {
+    return await AuthorizationRepository.getMercadoLivreLink()
+      .then(({ data }) => data)
+      .finally(() => this.loading = false)
+  } catch (error) {
+    console.log('error :>> ', error);
+  }
+}
+
+export async function getShopeeAuthorizationLink() {
+  this.loading = true
+  try {
+    return await AuthorizationRepository.getShopeeLink()
+      .then(({ data }) => data)
+      .finally(() => this.loading = false)
+  } catch (error) {
+    console.log('error :>> ', error);
+  }
+}
+
+export default {
+  login,
+  updateUser,
+  logout,
+  getMercadoLivreAuthorizationLink,
+  getShopeeAuthorizationLink
+} as ActionsType

@@ -1,5 +1,14 @@
 export default [
   {
+    path: '/authorizations',
+    name: 'Autorizações',
+    component: () => import('../views/Authorization/PlatformList.vue'),
+    meta: {
+      title: 'Autorizações',
+      middleware: [`auth`]
+    },
+  },
+  {
     path: '/orders',
     name: 'Orders',
     component: () => import('../views/Order/OrderList.vue'),

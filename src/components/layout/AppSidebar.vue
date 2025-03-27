@@ -246,6 +246,7 @@ const menuGroups = [
         name: "Tables",
         icon: BoxCubeIcon,
         subItems: [
+          { name: "Autorizações", path: "/authorizations" },
           { name: "Orders", path: "/orders" },
           { name: "Remessas", path: "/shipments" },
         ],

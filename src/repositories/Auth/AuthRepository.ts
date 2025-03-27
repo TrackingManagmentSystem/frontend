@@ -22,7 +22,8 @@ export type User = {
   tokens: {
     accessToken: string;
     expiresAt: string;
-    meliUserId: string;
+    platform: 'mercadolivre' | 'shopee';
+    partnerUserId: string;
     refreshToken: string;
     userId: string;
   }
