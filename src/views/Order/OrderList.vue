@@ -11,6 +11,21 @@
           <template v-slot:empty-button>
             <Button size="sm" @click="handleSyncOrders">Sincronizar ordens</Button>
           </template>
+          <template #cell-status="{ item }">
+            <Badge color="info" no-break-line>
+              {{ item }}
+            </Badge>
+          </template>
+          <template #cell-tags="{ item }">
+            <Badge v-for="tag in item" size="sm" no-break-line>
+              {{ getStatusLabel(tag) }}
+            </Badge>
+          </template>
+          <template #cell-shipment="{ item }">
+            <Button size="xs" @click="handleSyncShipment(item)">
+              Buscar remessa
+            </Button>
+          </template>
         </PaginatedTable>
     </div>
   </AdminLayout>
@@ -19,26 +34,31 @@
 <script lang="ts" setup>
 import PageBreadcrumb from "@/components/common/PageBreadcrumb.vue";
 import AdminLayout from "@/components/layout/AdminLayout.vue";
+import Badge from "@/components/ui/Badge.vue";
 import Button from "@/components/ui/Button.vue";
 import { useOrderStore } from "@/store/order";
+import { useShipmentStore } from "@/store/shipment";
 import { storeToRefs } from "pinia";
 import PaginatedTable from "@/components/tables/PaginatedTable.vue";
 import type { Column } from "@/components/tables/types";
 import { computed } from "vue";
+import { parseDateTimeString } from "@/utils/parser";
+import { getStatusLabel } from "@/utils/parser/shipment";
 
 const orderStore = useOrderStore()
+const shipmentStore = useShipmentStore()
 const { list, loading } = storeToRefs(orderStore)
 
 const columns: Column[] = [
   { key: 'id', label: 'ID da Ordem' },
-  { key: 'shippingId', label: 'ID da Remessa' },
   { key: 'status', label: 'Status' },
-  { key: 'buyer', label: 'Comprador' },
+  // { key: 'buyer', label: 'Comprador' },
   { key: 'seller', label: 'Vendedor' },
-  { key: 'items', label: 'Qtd Items' },
+  // { key: 'items', label: 'Qtd Items' },
   { key: 'tags', label: 'Tags' },
-  { key: 'dateCreated', label: 'Data de Criação' },
+  // { key: 'dateCreated', label: 'Data de Criação' },
   { key: 'lastUpdated', label: 'Última Atualização' },
+  { key: 'shipment', label: 'Remessa' },
 ];
 
 const getDateTimeString = (dateTime: string) => {
@@ -53,9 +73,10 @@ const items = computed(() => {
       buyer: order.buyer.nickname,
       seller: order.seller.nickname,
       items: order.items.length,
-      tags: order.tags.join(', '),
-      dateCreated: getDateTimeString(order.dateCreated),
-      lastUpdated: getDateTimeString(order.lastUpdated),
+      status: getStatusLabel(order.status),
+      dateCreated: parseDateTimeString(order.dateCreated),
+      lastUpdated: parseDateTimeString(order.lastUpdated),
+      shipment: order.shippingId,
     }
   })
 })
@@ -63,6 +84,10 @@ const items = computed(() => {
 const handleSyncOrders = async () => {
   await orderStore.sync();
   orderStore.loadList();
+}
+
+const handleSyncShipment = async (shipmentId: string) => {
+  await shipmentStore.sync(shipmentId);
 }
 
 orderStore.loadList();

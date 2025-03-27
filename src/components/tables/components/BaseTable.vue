@@ -26,7 +26,19 @@
                 :column="col"
                 :expand-row-below="() => toggleExpand(rowIndex)"
               >
-                <p class="text-gray-500 text-theme-sm dark:text-gray-400">{{ item[col.key] }}</p>
+                <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                  <template v-if="item[col.key].date && item[col.key].time">
+                    <span class="mb-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
+                      {{ item[col.key].date }}
+                    </span>
+                    <span class="text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                      {{ item[col.key].time }}
+                    </span>
+                  </template>
+                  <template v-else>
+                    {{ item[col.key] }}
+                  </template>
+                </p>
               </slot>
             </td>
           </tr>

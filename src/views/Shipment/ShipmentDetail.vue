@@ -95,8 +95,8 @@ const shipmentStore = useShipmentStore()
 // })
 
 const handleUpdate = async () => {
-  await shipmentStore.syncShipment(props.item.id.toString())
-  // const shipment = await shipmentStore.syncShipment(props.item.id.toString())
+  await shipmentStore.sync(props.item.id.toString())
+  // const shipment = await shipmentStore.sync(props.item.id.toString())
   // shipment.value = shipment
 }
 </script>

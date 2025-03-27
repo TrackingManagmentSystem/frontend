@@ -131,12 +131,14 @@ const statusTranslations = {
   shipped_outside_me: 'Enviado fora do MELI',
   shipped_outside_me_trusted: 'Enviado fora do MELI por vendedor confiável',
   inferred_shipped: 'Envio inferido',
+  paid: 'Pago',
+  test_order: 'Ordem de Teste',
 }
 
 type StatusType = keyof typeof statusTranslations
 
 export const getStatusLabel = (status: string) => {
-  return statusTranslations[status as StatusType] || 'Desconhecido'
+  return statusTranslations[status as StatusType] || `Desconhecido: ${status}`
 }
 
 const translateStatusHistoryLabel = (type: string): string => {

@@ -61,7 +61,7 @@ const items = computed(() => {
 watch(() => props.shipmentId, (value) => {
   if (value) {
     isOpen.value = true;
-    shipmentStore.syncShipment(value);
+    shipmentStore.sync(value);
   }
 });
 

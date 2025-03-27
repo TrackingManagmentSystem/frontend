@@ -150,7 +150,7 @@ export type Shipment = {
 class ShipmentRepository extends Repository<Shipment> {
   endpoint = 'shipment'
 
-  syncData (shipmentId: string) {
+  sync (shipmentId: string) {
     return this.$axios
       .useBearerToken()
       .get<Shipment>(`${this.endpoint}/${shipmentId}/sync`)
