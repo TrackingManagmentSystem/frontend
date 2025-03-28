@@ -1,5 +1,14 @@
 import { Repository } from '@/repositories/Base/Repository'
 
+type AuthToken = {
+  accessToken: string;
+  expiresAt: string;
+  platform: 'mercadolivre' | 'shopee';
+  partnerUserId: string;
+  refreshToken: string;
+  userId: string;
+}
+
 export type User = {
   id: string;
   firstName: string;
@@ -19,14 +28,7 @@ export type User = {
     id: string;
     name: string;
   };
-  tokens: {
-    accessToken: string;
-    expiresAt: string;
-    platform: 'mercadolivre' | 'shopee';
-    partnerUserId: string;
-    refreshToken: string;
-    userId: string;
-  }
+  tokens: AuthToken[];
 };
 
 class AuthRepository extends Repository {
@@ -45,7 +47,7 @@ class AuthRepository extends Repository {
   }
 
   logout() {
-    return this.$axios.post(`${this.endpoint}/logout`)
+    return this.$axios.useBearerToken().post(`${this.endpoint}/logout`)
   }
 
   reset(params: any) {

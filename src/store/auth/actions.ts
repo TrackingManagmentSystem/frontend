@@ -69,10 +69,11 @@ export async function updateUser(payload: Partial<User>) {
 export async function logout() {
   return AuthRepository.logout()
     .then(() => {
-      sessionStorage.remove(`USER`)
-      sessionStorage.remove(`AUTH_TOKEN`)
-      sessionStorage.remove(`AUTH_EXPIRATION`)
-      // this.router.push({ name: constants.routes.login.name })
+      this.user = null
+      this.token = null
+      sessionStorage.removeItem(`USER`)
+      sessionStorage.removeItem(`AUTH_TOKEN`)
+      sessionStorage.removeItem(`AUTH_EXPIRATION`)
     })
 }
 
@@ -104,4 +105,4 @@ export default {
   logout,
   getMercadoLivreAuthorizationLink,
   getShopeeAuthorizationLink
-} as ActionsType
+} as unknown as ActionsType
