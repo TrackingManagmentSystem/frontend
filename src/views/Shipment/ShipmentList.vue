@@ -6,7 +6,6 @@
           :columns="columns"
           :items="items"
           :loading="loading"
-          title="Lista"
           textEmpty="Nenhuma Remessa Encontrada"
         >
         <template #cell-receiver="{ item }">

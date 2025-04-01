@@ -27,7 +27,7 @@
                 :expand-row-below="() => toggleExpand(rowIndex)"
               >
                 <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                  <template v-if="item[col.key].date && item[col.key].time">
+                  <template v-if="item[col.key] && Object.hasOwn(item[col.key], 'date') && Object.hasOwn(item[col.key], 'time')">
                     <span class="mb-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
                       {{ item[col.key].date }}
                     </span>
