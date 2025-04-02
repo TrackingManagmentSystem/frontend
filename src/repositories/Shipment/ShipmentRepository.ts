@@ -94,7 +94,7 @@ interface ShippingItem {
   description: string;
   quantity: number;
   userProductId: string;
-  senderId: number;
+  senderId: string;
   dimensions: string;
   shipmentId: string;
 }
@@ -112,9 +112,9 @@ export type Shipment = {
   createdBy: string;
   applicationId: string | null;
   orderId: number;
-  receiverId: number;
-  senderId: number;
-  customerId: number | undefined;
+  receiverId: string;
+  senderId: string;
+  customerId: string | undefined;
   baseCost: number;
   orderCost: number;
   serviceId: number;

@@ -26,6 +26,7 @@ export type Order = {
   fulfilled: string | null;
   orderRequest: OrderRequest;
   expirationDate: string | null;
+  shippingId: string;
   shipping: Shipping;
   dateClosed: string;
   id: number;

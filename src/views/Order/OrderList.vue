@@ -6,10 +6,10 @@
           :columns="columns"
           :items="items"
           :loading="loading"
-          textEmpty="Nenhum Pedido Encontrado"
+          textEmpty="No Orders founded"
         >
           <template v-slot:empty-button>
-            <Button size="sm" @click="handleSyncOrders">Sincronizar ordens</Button>
+            <Button size="sm" @click="handleSyncOrders">Sync Orders</Button>
           </template>
           <template #cell-status="{ item }">
             <Badge color="info" no-break-line>
@@ -23,7 +23,7 @@
           </template>
           <template #cell-shipment="{ item }">
             <Button size="xs" @click="handleSyncShipment(item)">
-              Buscar remessa
+              Search Shipment
             </Button>
           </template>
         </PaginatedTable>
@@ -50,15 +50,15 @@ const shipmentStore = useShipmentStore()
 const { list, loading } = storeToRefs(orderStore)
 
 const columns: Column[] = [
-  { key: 'id', label: 'ID da Ordem' },
+  { key: 'id', label: 'Order ID' },
   { key: 'status', label: 'Status' },
   // { key: 'buyer', label: 'Comprador' },
-  { key: 'seller', label: 'Vendedor' },
+  { key: 'seller', label: 'Seller' },
   // { key: 'items', label: 'Qtd Items' },
   { key: 'tags', label: 'Tags' },
   // { key: 'dateCreated', label: 'Data de Criação' },
-  { key: 'lastUpdated', label: 'Última Atualização' },
-  { key: 'shipment', label: 'Remessa' },
+  { key: 'lastUpdated', label: 'Las Update' },
+  { key: 'shipment', label: 'Shipment' },
 ];
 
 const getDateTimeString = (dateTime: string) => {
@@ -76,7 +76,7 @@ const items = computed(() => {
       status: getStatusLabel(order.status),
       dateCreated: parseDateTimeString(order.dateCreated),
       lastUpdated: parseDateTimeString(order.lastUpdated),
-      shipment: order.shipping.id,
+      shipment: order.shippingId,
     }
   })
 })

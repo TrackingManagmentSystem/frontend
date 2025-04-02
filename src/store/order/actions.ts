@@ -5,7 +5,7 @@ export async function loadList(this: StateType) {
   this.loading = true
   try {
     await OrderRepository.fetchAll({
-      include: 'buyer,seller,items'
+      include: 'buyer,seller,items,shipment'
     }).then(({ data }) => {
       this.list = data.map(order => ({
         ...order,
