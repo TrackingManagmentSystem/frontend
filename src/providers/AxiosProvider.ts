@@ -66,7 +66,7 @@ export type AxiosWithOptionalAuth =  AxiosInstance & { useBearerToken?: Function
 export type AxiosWithAuth =  AxiosInstance & { useBearerToken: () => AxiosWithAuth }
 
 // API
-const axiosWithAuth: AxiosWithOptionalAuth = axios.create({ baseURL: `http://localhost:3000` });
+const axiosWithAuth: AxiosWithOptionalAuth = axios.create({ baseURL: import.meta.env.BASE_URL });
 axiosWithAuth.interceptors.response.use((response) => response, onReject);
 axiosWithAuth.useBearerToken = (): AxiosWithAuth => {
   if (axiosWithAuth.interceptors.request.handlers.length === 0) {

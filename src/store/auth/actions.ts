@@ -23,7 +23,7 @@ export async function login(payload: { email: string; password: string; }) {
           .then(({ data }) => {
             this.user = data;
             sessionStorage.setItem(`USER`, JSON.stringify(data))
-            Router.push({ name: `Ecommerce` })
+            Router.push({ name: `Orders` })
           })
       })
 
