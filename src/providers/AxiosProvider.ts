@@ -72,7 +72,7 @@ export type AxiosWithOptionalAuth =  AxiosInstance & {
 export type AxiosWithAuth =  AxiosInstance & { useBearerToken: () => AxiosWithAuth }
 
 // API
-const axiosWithAuth: AxiosWithOptionalAuth = axios.create({ baseURL: import.meta.env.BASE_URL });
+const axiosWithAuth: AxiosWithOptionalAuth = axios.create({ baseURL: import.meta.env.VITE_BASE_URL });
 axiosWithAuth.interceptors.response.use((response) => response, onReject);
 axiosWithAuth.useBearerToken = (): AxiosWithAuth => {
   if (
