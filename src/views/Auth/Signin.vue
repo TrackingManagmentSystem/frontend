@@ -258,11 +258,12 @@
           <div class="flex items-center justify-center z-1">
             <common-grid-shape />
             <div class="flex flex-col items-center max-w-xs">
-              <router-link to="/" class="block mb-4">
-                <img width="{231}" height="{48}" src="/images/logo/auth-logo.svg" alt="Logo" />
+              <router-link to="/" class="mb-4 flex items-center gap-5">
+                <img width="80" height="80" class="rounded-lg" src="/images/logo/logo.jpeg" alt="Logo" />
+                <h1 class="text-white text-title-md">Tracking Managment System</h1>
               </router-link>
               <p class="text-center text-gray-400 dark:text-white/60">
-                Free and Open-Source Tailwind CSS Admin Dashboard Template
+                Dashboard to manage your clients Orders and Shipments.
               </p>
             </div>
           </div>
