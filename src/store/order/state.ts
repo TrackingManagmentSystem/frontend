@@ -1,7 +1,6 @@
-import type { Order } from "@/repositories/Order/OrderRepository";
-import type { State } from "../types";
+import type { StateType } from "./types";
 
-export default (): State<Order> => ({
+export default (): StateType => ({
   loading: false,
   list: [],
   actual: null,

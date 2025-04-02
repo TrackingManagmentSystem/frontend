@@ -153,7 +153,7 @@ const translateStatusHistoryLabel = (type: string): string => {
     dateShipped: `Dt Entregue`,
   }
 
-  return statusHistoryType[type] as string
+  return type in statusHistoryType ? statusHistoryType[type as keyof typeof statusHistoryType] : type
 }
 
 export const parseStatusHistory = (history: Shipment['statusHistory']) => {
@@ -181,7 +181,7 @@ const translateAddressLabel = (type: string): string => {
   // return type in addressType
   //   ? addressType[type] as string
   //   : type
-  return addressType[type] as string
+  return type in addressType ? addressType[type as keyof typeof addressType] : type
 }
 
 export const parseAddress = (history: Shipment['receiverAddress']) => {
@@ -200,7 +200,7 @@ export const translateLogistic = (type: string): string => {
     self_service: 'Mercado Envios Flex',
     fulfillment: 'Mercado Envios Full',
   }
-  return logisticType[type] as string
+  return type in logisticType ? logisticType[type as keyof typeof logisticType] : type
 }
 
 export type ShipmentListItem =

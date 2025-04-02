@@ -28,6 +28,6 @@ const emit = defineEmits<{
 }>();
 const props = defineProps<{
   tabs: Tab[];
-  activeTab?: Tab;
+  activeTab: Tab | null;
 }>()
 </script>

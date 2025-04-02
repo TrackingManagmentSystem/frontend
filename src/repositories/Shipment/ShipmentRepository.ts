@@ -100,7 +100,7 @@ interface ShippingItem {
 }
 
 export type Shipment = {
-  id: number;
+  id: string;
   trackingNumber: string;
   status: string;
   subStatus: string;

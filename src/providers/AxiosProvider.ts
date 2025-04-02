@@ -1,5 +1,5 @@
 import { Store } from '@/store'
-import axios, { AxiosError, type AxiosInstance } from 'axios'
+import axios, { AxiosError, type AxiosInstance, type AxiosInterceptorManager, type AxiosResponse, type InternalAxiosRequestConfig } from 'axios'
 
 axios.defaults.headers.common['Accept'] = 'application/json'
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
@@ -36,7 +36,7 @@ const onReject = (
 
     // 422 Unprocessable Entity
     if (error.response.status === 422 && error.response.data.errors) {
-      const errors = error.response.data.errors
+      const errors: Record<string, any> = error.response.data.errors
       Object.keys(errors).map((field: string) => {
         if (Array.isArray(errors[field])) {
           errors[field].map(msg => {
@@ -62,14 +62,23 @@ const onReject = (
 // Attach Function Treatment
 axios.interceptors.response.use((response) => response, onReject);
 
-export type AxiosWithOptionalAuth =  AxiosInstance & { useBearerToken?: Function }
+export type AxiosWithOptionalAuth =  AxiosInstance & {
+  useBearerToken?: Function;
+  interceptors: {
+    request: AxiosInterceptorManager<InternalAxiosRequestConfig> & { handlers?: Function[]; };
+    response: AxiosInterceptorManager<AxiosResponse>;
+  }
+}
 export type AxiosWithAuth =  AxiosInstance & { useBearerToken: () => AxiosWithAuth }
 
 // API
 const axiosWithAuth: AxiosWithOptionalAuth = axios.create({ baseURL: import.meta.env.BASE_URL });
 axiosWithAuth.interceptors.response.use((response) => response, onReject);
 axiosWithAuth.useBearerToken = (): AxiosWithAuth => {
-  if (axiosWithAuth.interceptors.request.handlers.length === 0) {
+  if (
+    axiosWithAuth.interceptors.request &&
+    axiosWithAuth.interceptors.request.handlers?.length === 0
+  ) {
     axiosWithAuth.interceptors.request.use(
       (config) => {
         config.headers['Authorization'] = `Bearer ${Store.state.value.auth.token}`

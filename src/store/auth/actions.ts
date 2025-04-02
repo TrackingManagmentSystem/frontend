@@ -1,17 +1,9 @@
 import Router from "@/router";
 import AuthRepository, { type User } from "../../repositories/Auth/AuthRepository";
 import AuthorizationRepository from "@/repositories/Auth/AuthorizationRepository";
+import type { ActionsType, StateType } from "./types";
 
-export type ActionsType = {
-  login: (payload: { email: string; password: string; }) => Promise<void>;
-  updateUser: (payload: Partial<User>) => Promise<void>;
-  logout: () => Promise<void>;
-  getMercadoLivreAuthorizationLink: () => Promise<{ authorization_url: string; }>;
-  getShopeeAuthorizationLink: () => Promise<{ authorization_url: string; }>;
-};
-
-
-export async function login(payload: { email: string; password: string; }) {
+export async function login(this: StateType, payload: { email: string; password: string; }) {
   this.loading = true
   try {
     await AuthRepository.login(payload)
@@ -29,20 +21,11 @@ export async function login(payload: { email: string; password: string; }) {
 
   } catch (error) {
     console.log('error :>> ', error);
-    // Handle Errors here.
-    // const errorCode = error.code;
-    // const errorMessage = error.message;
-
-    // The email of the user's account used.
-    // const email = error.customData.email;
-
-    // The AuthCredential type that was used.
-    // const credential = provider.credentialFromError(error);
   }
   this.loading = false
 }
 
-export async function updateUser(payload: Partial<User>) {
+export async function updateUser(this: StateType, payload: Partial<User>) {
   this.loading = true
   try {
     await AuthRepository.update(payload)
@@ -53,20 +36,11 @@ export async function updateUser(payload: Partial<User>) {
 
   } catch (error) {
     console.log('error :>> ', error);
-    // Handle Errors here.
-    // const errorCode = error.code;
-    // const errorMessage = error.message;
-
-    // The email of the user's account used.
-    // const email = error.customData.email;
-
-    // The AuthCredential type that was used.
-    // const credential = provider.credentialFromError(error);
   }
   this.loading = false
 }
 
-export async function logout() {
+export async function logout(this: StateType) {
   return AuthRepository.logout()
     .then(() => {
       this.user = null
@@ -77,7 +51,7 @@ export async function logout() {
     })
 }
 
-export async function getMercadoLivreAuthorizationLink() {
+export async function getMercadoLivreAuthorizationLink(this: StateType) {
   this.loading = true
   try {
     return await AuthorizationRepository.getMercadoLivreLink()
@@ -88,7 +62,7 @@ export async function getMercadoLivreAuthorizationLink() {
   }
 }
 
-export async function getShopeeAuthorizationLink() {
+export async function getShopeeAuthorizationLink(this: StateType) {
   this.loading = true
   try {
     return await AuthorizationRepository.getShopeeLink()

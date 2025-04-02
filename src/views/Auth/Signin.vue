@@ -292,7 +292,7 @@ const handleSubmit = () => {
   authStore.login({
     email: email.value,
     password: password.value,
-    keepLoggedIn: keepLoggedIn.value,
+    // keepLoggedIn: keepLoggedIn.value,
   })
 }
 </script>

@@ -1,7 +1,6 @@
-import type { Shipment } from "@/repositories/Shipment/ShipmentRepository";
-import type { State } from "../types";
+import type { StateType } from "./types";
 
-export default (): State<Shipment> => ({
+export default (): StateType => ({
   loading: false,
   list: [],
   actual: null,

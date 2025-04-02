@@ -1,6 +1,7 @@
 import ShipmentRepository from "@/repositories/Shipment/ShipmentRepository";
+import type { ActionsType, StateType } from "./types";
 
-export async function loadList() {
+export async function loadList(this: StateType) {
   this.loading = true
   try {
     await ShipmentRepository.fetchAll()
@@ -9,19 +10,18 @@ export async function loadList() {
       })
   } catch (error) {
     console.log('error :>> ', error);
-
   }
   this.loading = false
 }
 
-export async function sync(shipmentId: string) {
+export async function sync(this: StateType, shipmentId: string) {
   this.loading = true
   try {
     await ShipmentRepository.sync(shipmentId)
       .then(({ data }) => {
         if (this.list.length > 0) {
           this.list = this.list.map(shipment => {
-            if (shipment.id.toString() === shipmentId) {
+            if (shipment.id === shipmentId) {
               return data;
             }
             return shipment;
@@ -33,3 +33,8 @@ export async function sync(shipmentId: string) {
   }
   this.loading = false
 }
+
+export default {
+  loadList,
+  sync
+} as unknown as ActionsType

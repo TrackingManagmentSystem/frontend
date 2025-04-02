@@ -76,7 +76,7 @@ const items = computed(() => {
       status: getStatusLabel(order.status),
       dateCreated: parseDateTimeString(order.dateCreated),
       lastUpdated: parseDateTimeString(order.lastUpdated),
-      shipment: order.shippingId,
+      shipment: order.shipping.id,
     }
   })
 })

@@ -2,14 +2,12 @@ import { defineStore } from 'pinia';
 
 import state from './state'
 import getters from './getters'
-import * as actions from './actions'
-import type { State, Action } from '@/store/types';
-import type { Order } from '@/repositories/Order/OrderRepository';
+import actions from './actions'
+import type { ActionsType, GettersType, StateType } from './types';
 
-export const useOrderStore = defineStore<'order', State<Order>, {}, Action<Order>>('order', {
+
+export const useOrderStore = defineStore<'order', StateType, GettersType, ActionsType>('order', {
   state,
   getters,
-  actions: {
-    ...actions as unknown as Action<Order>
-  }
+  actions,
 });

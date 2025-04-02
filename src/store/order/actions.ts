@@ -1,6 +1,7 @@
 import OrderRepository from "@/repositories/Order/OrderRepository";
+import type { ActionsType, StateType } from "./types";
 
-export async function loadList() {
+export async function loadList(this: StateType) {
   this.loading = true
   try {
     await OrderRepository.fetchAll({
@@ -18,7 +19,7 @@ export async function loadList() {
   }
 }
 
-export async function sync() {
+export async function sync(this: StateType) {
   this.loading = true
   try {
     await OrderRepository.sync().then(({ data }) => {
@@ -30,3 +31,8 @@ export async function sync() {
     this.loading = false
   }
 }
+
+export default {
+  loadList,
+  sync
+} as unknown as ActionsType

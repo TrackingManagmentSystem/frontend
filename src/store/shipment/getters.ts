@@ -1,8 +1,7 @@
-import type { Shipment } from "@/repositories/Shipment/ShipmentRepository";
-import type { State } from "@/store/types";
+import type { StateType } from "./types";
 
 export default {
-  getTranslatedStatus: (state: State<Shipment>) => {
+  getList: (state: StateType) => {
     return state?.list
   },
 }

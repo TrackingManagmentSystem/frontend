@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 
-import state, { type AuthState } from './state'
+import state from './state'
 import getters from './getters'
 import actions from './actions'
-import type { ActionsType } from './actions'
+import type { ActionsType, GettersType, StateType } from './types';
 
-export const useAuthStore = defineStore<'auth', AuthState, {}, ActionsType>('auth', {
+export const useAuthStore = defineStore<'auth', StateType, GettersType, ActionsType>('auth', {
   state,
   getters,
   actions,
