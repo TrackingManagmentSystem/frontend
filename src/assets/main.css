@@ -266,9 +266,9 @@ layer(base);
     @apply rounded-full;
   }
 
-  &::-webkit-scrollbar-thumb {
+  /* &::-webkit-scrollbar-thumb {
     @apply bg-gray-200 rounded-full dark:bg-gray-700;
-  }
+  } */
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
