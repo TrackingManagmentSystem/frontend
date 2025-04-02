@@ -13,11 +13,12 @@ const router = createRouter({
 
 export default router
 
-type CustomRouteType = {
-  meta?: {
-    middleware: string[];
+declare module 'vue-router' {
+  interface RouteMeta {
+    // requiresAuth?: boolean
+    middleware?: string[];
   }
-};
+}
 
 router.beforeEach((to, from, next) => {
   document.title = `Vue.js ${to.meta.title} | TailAdmin - Vue.js Tailwind CSS Dashboard Template`
@@ -29,8 +30,7 @@ router.beforeEach(async ($to, $from, $next) => {
   if (
     $to.meta &&
     $to.meta.middleware &&
-    Array.isArray($to.meta.middleware) &&
-    $to.meta.middleware.includes('auth') &&
+    $to.meta.middleware?.includes('auth') &&
     !isLogged
   ) {
     // $next({

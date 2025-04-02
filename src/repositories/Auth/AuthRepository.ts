@@ -38,6 +38,10 @@ class AuthRepository extends Repository {
     return this.$axios.useBearerToken().get<User>(`${this.endpoint}/me`)
   }
 
+  register(params: { email: string; password: string; firstName: string; lastName: string; }) {
+    return this.$axios.post<{ accessToken: string; }>(`${this.endpoint}/register`, params)
+  }
+
   login(params: { email: string; password: string; }) {
     return this.$axios.post<{ accessToken: string; }>(`${this.endpoint}/login`, params)
   }

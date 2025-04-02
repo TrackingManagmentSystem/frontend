@@ -206,7 +206,7 @@
           </div>
         </div>
       </nav>
-      <SidebarWidget v-if="isExpanded || isHovered || isMobileOpen" />
+      <!-- <SidebarWidget v-if="isExpanded || isHovered || isMobileOpen" /> -->
     </div>
   </aside>
 </template>
@@ -229,6 +229,7 @@ import {
   TableIcon,
   ListIcon,
   PlugInIcon,
+  UserGroupIcon
 } from "../../icons";
 import SidebarWidget from "./SidebarWidget.vue";
 import BoxCubeIcon from "@/icons/BoxCubeIcon.vue";
@@ -240,15 +241,24 @@ const { isExpanded, isMobileOpen, isHovered, openSubmenu } = useSidebar();
 
 const menuGroups = [
   {
+    title: "Integrations",
+    items: [
+      {
+        name: "Authorizations",
+        path: "/authorizations",
+        icon: UserGroupIcon,
+      },
+    ],
+  },
+  {
     title: "Sistema TMS",
     items: [
       {
-        name: "Tables",
+        name: "Managment",
         icon: BoxCubeIcon,
         subItems: [
-          { name: "Autorizações", path: "/authorizations" },
           { name: "Orders", path: "/orders" },
-          { name: "Remessas", path: "/shipments" },
+          { name: "Shipments", path: "/shipments" },
         ],
       },
     ],

@@ -7,6 +7,16 @@ export default [
       title: 'Autorizações',
       middleware: [`auth`]
     },
+    children: [
+      {
+        name: 'code-to-token-mercado-livre',
+        path: 'meli',
+      },
+      {
+        name: 'code-to-token-shopee',
+        path: 'shopee',
+      },
+    ]
   },
   {
     path: '/orders',

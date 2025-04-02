@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import PageBreadcrumb from "@/components/common/PageBreadcrumb.vue";
 import AdminLayout from "@/components/layout/AdminLayout.vue";
@@ -38,9 +38,20 @@ import Button from "@/components/ui/Button.vue";
 import PaginatedTable from "@/components/tables/PaginatedTable.vue";
 import type { Column } from "@/components/tables/types";
 import { useAuthStore } from "@/store/auth";
+import { useRoute } from "vue-router";
 
 const authStore = useAuthStore()
 const { loading } = storeToRefs(authStore)
+const { query, name } = useRoute()
+
+watch(() => query, async (params) => {
+  if (params.code) {
+    if (name?.toString().startsWith('code-to-token-')) {
+      const platform = name?.toString().replace('code-to-token-', '')
+      await authStore.parseCodeToAccessToken({ platform, params })
+    }
+  }
+}, {immediate: true })
 
 const columns: Column[] = [
   { key: 'platform', label: 'Plataforma' },
@@ -73,16 +84,16 @@ const items = computed(() => {
 });
 
 const handleGenerateURL = async (platform: string) => {
+  const link = await authStore.getAuthorizationLink(platform);
   if (platform === 'mercado-livre') {
-    const url = await authStore.getMercadoLivreAuthorizationLink();
-    mercadolivreLink.value = url.authorization_url;
+    mercadolivreLink.value = link.authorization_url;
   } else if (platform === 'shopee') {
-    const url = await authStore.getShopeeAuthorizationLink();
-    shopeeLink.value = url.authorization_url;
+    shopeeLink.value = link.authorization_url;
   }
 };
 
 const handleLink = (item: string) => {
   window.open(item, '_blank');
 };
+
 </script>

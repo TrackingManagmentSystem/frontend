@@ -314,6 +314,7 @@ import FullScreenLayout from '@/components/layout/FullScreenLayout.vue'
 import CommonGridShape from '@/components/common/CommonGridShape.vue'
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useAuthStore } from '@/store/auth'
 
 const firstName = ref('')
 const lastName = ref('')
@@ -321,19 +322,19 @@ const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
 const agreeToTerms = ref(false)
+const authStore = useAuthStore();
 
 const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
 }
 
 const handleSubmit = () => {
-  // Implement form submission logic here
-  console.log('Form submitted', {
+  authStore.register({
     firstName: firstName.value,
     lastName: lastName.value,
     email: email.value,
     password: password.value,
-    agreeToTerms: agreeToTerms.value,
-  })
+    // agreeToTerms: agreeToTerms.value,
+  });
 }
 </script>

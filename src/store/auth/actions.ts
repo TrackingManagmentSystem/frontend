@@ -25,6 +25,28 @@ export async function login(this: StateType, payload: { email: string; password:
   this.loading = false
 }
 
+export async function register(this: StateType, payload: { email: string; password: string; firstName: string; lastName: string; }) {
+  this.loading = true
+  try {
+    return await AuthRepository.register(payload)
+      .then(({ data: { accessToken } }) => {
+        this.token = accessToken;
+        sessionStorage.setItem(`AUTH_TOKEN`, accessToken)
+
+        AuthRepository.me()
+          .then(({ data }) => {
+            this.user = data;
+            sessionStorage.setItem(`USER`, JSON.stringify(data))
+            Router.push({ name: `Orders` })
+          })
+      })
+
+  } catch (error) {
+    console.log('error :>> ', error);
+  }
+  this.loading = false
+}
+
 export async function updateUser(this: StateType, payload: Partial<User>) {
   this.loading = true
   try {
@@ -51,10 +73,10 @@ export async function logout(this: StateType) {
     })
 }
 
-export async function getMercadoLivreAuthorizationLink(this: StateType) {
+export async function getAuthorizationLink(this: StateType, platform: string) {
   this.loading = true
   try {
-    return await AuthorizationRepository.getMercadoLivreLink()
+    return await AuthorizationRepository.getAuthorizationUrl(platform)
       .then(({ data }) => data)
       .finally(() => this.loading = false)
   } catch (error) {
@@ -62,11 +84,14 @@ export async function getMercadoLivreAuthorizationLink(this: StateType) {
   }
 }
 
-export async function getShopeeAuthorizationLink(this: StateType) {
+export async function parseCodeToAccessToken(
+  this: StateType,
+  payload: { platform: string; params: Record<string, any> }
+) {
   this.loading = true
   try {
-    return await AuthorizationRepository.getShopeeLink()
-      .then(({ data }) => data)
+    return await AuthorizationRepository.parseCodeToAccessToken(payload)
+      .then(({ data: { accessToken } }) => accessToken)
       .finally(() => this.loading = false)
   } catch (error) {
     console.log('error :>> ', error);
@@ -75,8 +100,9 @@ export async function getShopeeAuthorizationLink(this: StateType) {
 
 export default {
   login,
+  register,
   updateUser,
   logout,
-  getMercadoLivreAuthorizationLink,
-  getShopeeAuthorizationLink
+  getAuthorizationLink,
+  parseCodeToAccessToken
 } as unknown as ActionsType

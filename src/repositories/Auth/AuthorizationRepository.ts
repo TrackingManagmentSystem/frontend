@@ -1,14 +1,14 @@
 import { Repository } from '@/repositories/Base/Repository'
 
 class AuthorizationRepository extends Repository {
-  endpoint = 'getAuthorizationUrl'
+  endpoint = ''
 
-  getMercadoLivreLink() {
-    return this.$axios.useBearerToken().get<{ authorization_url: string }>(`mercado-livre/${this.endpoint}`)
+  getAuthorizationUrl(platform: string) {
+    return this.$axios.useBearerToken().get<{ authorization_url: string }>(`${platform}/getAuthorizationUrl`)
   }
 
-  getShopeeLink() {
-    return this.$axios.useBearerToken().get<{ authorization_url: string }>(`shopee/${this.endpoint}`)
+  parseCodeToAccessToken({ platform, params }: { platform: string; params: Record<string, any> }) {
+    return this.$axios.useBearerToken().get<{ accessToken: string; }>(`${platform}/callback`, { params })
   }
 }
 
