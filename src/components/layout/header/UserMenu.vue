@@ -5,7 +5,8 @@
       @click.prevent="toggleDropdown"
     >
       <span class="mr-3 overflow-hidden rounded-full h-11 w-11">
-        <img src="/images/user/owner.jpg" alt="User" />
+        <!-- <img src="/images/user/owner.jpg" alt="User" /> -->
+        <img :src="avatar" alt="User" />
       </span>
 
       <span class="block mr-1 font-medium text-theme-sm">{{ user.name }} </span>
@@ -65,15 +66,15 @@ import { storeToRefs } from 'pinia';
 
 const authStore = useAuthStore();
 const router = useRouter();
-const { user } = storeToRefs(authStore);
+const { user, avatar } = storeToRefs(authStore);
 
 const dropdownOpen = ref(false)
 const dropdownRef = ref(null)
 
 const menuItems = [
   { href: '/profile', icon: UserCircleIcon, text: 'Edit profile' },
-  { href: '/chat', icon: SettingsIcon, text: 'Account settings' },
-  { href: '/profile', icon: InfoCircleIcon, text: 'Support' },
+  // { href: '/chat', icon: SettingsIcon, text: 'Account settings' },
+  // { href: '/profile', icon: InfoCircleIcon, text: 'Support' },
 ]
 
 const toggleDropdown = () => {

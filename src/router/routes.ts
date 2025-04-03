@@ -1,10 +1,10 @@
 export default [
   {
     path: '/authorizations',
-    name: 'Autorizações',
+    name: 'Autorizations',
     component: () => import('../views/Authorization/PlatformList.vue'),
     meta: {
-      title: 'Autorizações',
+      title: 'Autorizations',
       middleware: [`auth`]
     },
     children: [
@@ -34,7 +34,7 @@ export default [
     name: 'Shipments',
     component: () => import('../views/Shipment/ShipmentList.vue'),
     meta: {
-      title: 'Remessas',
+      title: 'Shipments',
       middleware: [`auth`]
     },
   },

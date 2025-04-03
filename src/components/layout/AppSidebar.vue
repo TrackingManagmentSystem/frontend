@@ -251,10 +251,10 @@ const menuGroups = [
     ],
   },
   {
-    title: "Sistema TMS",
+    title: "Tracking Management",
     items: [
       {
-        name: "Managment",
+        name: "Management",
         icon: BoxCubeIcon,
         subItems: [
           { name: "Orders", path: "/orders" },

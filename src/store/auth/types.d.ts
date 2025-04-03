@@ -7,8 +7,9 @@ export type StateType = {
 };
 
 export type GettersType = {
-  isLogged(): boolean
-  getUser(state: StateType): StateType['user']
+  avatar(): string;
+  isLogged(): boolean;
+  getUser(state: StateType): StateType['user'];
 };
 
 export type ActionsType = {

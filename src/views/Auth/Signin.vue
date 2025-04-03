@@ -260,7 +260,7 @@
             <div class="flex flex-col items-center max-w-xs">
               <router-link to="/" class="mb-4 flex items-center gap-5">
                 <img width="80" height="80" class="rounded-lg" src="/images/logo/logo.jpeg" alt="Logo" />
-                <h1 class="text-white text-title-md">Tracking Managment System</h1>
+                <h1 class="text-white text-title-md">Tracking Management System</h1>
               </router-link>
               <p class="text-center text-gray-400 dark:text-white/60">
                 Dashboard to manage your clients Orders and Shipments.

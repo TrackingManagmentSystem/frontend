@@ -7,7 +7,7 @@
             class="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800"
           >
             <!-- <img src="/images/user/owner.jpg" alt="user" /> -->
-            <img src="https://avatars.githubusercontent.com/u/7924978?v=4" alt="user" />
+            <img :src="avatar" alt="user avatar" />
           </div>
           <div class="order-3 xl:order-2">
             <h4
@@ -168,7 +168,7 @@ import { useAuthStore } from '@/store/auth'
 import { storeToRefs } from 'pinia';
 
 const authStore = useAuthStore();
-const { user } = storeToRefs(authStore);
+const { user, avatar } = storeToRefs(authStore);
 
 const isProfileInfoModal = ref(false)
 

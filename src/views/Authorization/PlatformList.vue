@@ -6,7 +6,7 @@
           :columns="columns"
           :items="items"
           :loading="loading"
-          textEmpty="Nenhum Pedido Encontrado"
+          textEmpty="No Platform Found"
         >
           <template v-slot:cell-platform="{ item: { logo, name } }">
             <div class="flex gap-3 items-center">
@@ -19,10 +19,10 @@
             </div>
           </template>
           <template v-slot:cell-action="{ item: platform }">
-            <Button size="sm" @click="handleGenerateURL(platform)">Gerar Link de autorização</Button>
+            <Button size="sm" @click="handleGenerateURL(platform)">Generate Link</Button>
           </template>
           <template v-slot:cell-link="{ item }">
-            <Button v-if="item" size="sm" @click="handleLink(item)">Acessar link</Button>
+            <Button v-if="item" size="sm" @click="handleLink(item)">Access link</Button>
           </template>
         </PaginatedTable>
     </div>
@@ -54,8 +54,8 @@ watch(() => query, async (params) => {
 }, {immediate: true })
 
 const columns: Column[] = [
-  { key: 'platform', label: 'Plataforma' },
-  { key: 'action', label: 'Ação' },
+  { key: 'platform', label: 'Platform' },
+  { key: 'action', label: 'Action' },
   { key: 'link', label: 'Link' },
 ];
 

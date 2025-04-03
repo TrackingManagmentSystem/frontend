@@ -1,7 +1,13 @@
+import { generateAvatar } from "@/utils/avatar";
 import type { StateType } from "./types";
 
+
+
 export default {
-  // avatar: (state: AuthState) => state?.user?.photoURL,
+  avatar: (state: StateType) => {
+    return generateAvatar()
+    // return state?.user?.photoURL
+  },
 
   isLogged() { return this.getUser !== null && this.getUser !== undefined },
 

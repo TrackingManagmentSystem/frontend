@@ -57,7 +57,7 @@ const columns: Column[] = [
   // { key: 'items', label: 'Qtd Items' },
   { key: 'tags', label: 'Tags' },
   // { key: 'dateCreated', label: 'Data de Criação' },
-  { key: 'lastUpdated', label: 'Las Update' },
+  { key: 'lastUpdated', label: 'Last Update' },
   { key: 'shipment', label: 'Shipment' },
 ];
 
