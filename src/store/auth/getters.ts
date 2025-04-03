@@ -1,8 +1,6 @@
 import { generateAvatar } from "@/utils/avatar";
 import type { StateType } from "./types";
 
-
-
 export default {
   avatar: (state: StateType) => {
     return generateAvatar()
