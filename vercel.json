@@ -1,9 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/:path*", 
-      "destination": "/:path*",
-      "permanent": false
+      "source": "/:path*",
+      "destination": "https://tms-frontend-git-main-filipebsmonteiros-projects.vercel.app/:path"
     }
   ]
 }
