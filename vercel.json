@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/:path*",
-      "destination": "https://tms-frontend-git-main-filipebsmonteiros-projects.vercel.app/:path"
+      "destination": "/index.html"
     }
   ]
 }
