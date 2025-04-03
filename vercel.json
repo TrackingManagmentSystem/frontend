@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/authorizations/meli/:path*", 
+      "source": "/:path*", 
       "destination": "/:path*",
       "permanent": false
     }
