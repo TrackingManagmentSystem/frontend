@@ -7,7 +7,7 @@ export type StateType = {
 };
 
 export type GettersType = {
-  avatar(): string;
+  avatar(state: StateType): string;
   isLogged(): boolean;
   getUser(state: StateType): StateType['user'];
 };
