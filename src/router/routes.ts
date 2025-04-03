@@ -9,10 +9,12 @@ export default [
     },
     children: [
       {
+        redirect: { name: '' },
         name: 'code-to-token-mercado-livre',
         path: 'meli',
       },
       {
+        redirect: { name: '' },
         name: 'code-to-token-shopee',
         path: 'shopee',
       },
