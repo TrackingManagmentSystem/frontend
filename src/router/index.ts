@@ -40,19 +40,11 @@ router.beforeEach(async ($to, $from, $next) => {
   $next()
 })
 
-router.beforeEach((to, from, next) => {
-  console.log('from :>> ', from);
-  console.log('from.name :>> ', from.name);
-  console.log('to :>> ', to);
-  console.log('to.query :>> ', to.query);
+router.beforeEach(async (to, from, next) => {
   if (to.query.code) {
-    if (!from.name) {
-      const referrer = document.referrer;
-      if (referrer) {
-        console.log('External referrer:', referrer);
-        //   await authStore.parseCodeToAccessToken({ platform, params })
-      }
-    }
+    const authStore = useAuthStore(Store);
+    const platform = (to.query.code as string).startsWith('TG') ? 'mercado-livre' : 'shopee';
+    await authStore.parseCodeToAccessToken({ platform, params: to.query });
   }
   next()
 })
