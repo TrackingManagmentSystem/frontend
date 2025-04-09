@@ -42,16 +42,6 @@ import { useRoute } from "vue-router";
 
 const authStore = useAuthStore()
 const { loading } = storeToRefs(authStore)
-const { query, name } = useRoute()
-
-watch(() => query, async (params) => {
-  if (params.code) {
-    if (name?.toString().startsWith('code-to-token-')) {
-      const platform = name?.toString().replace('code-to-token-', '')
-      await authStore.parseCodeToAccessToken({ platform, params })
-    }
-  }
-}, {immediate: true })
 
 const columns: Column[] = [
   { key: 'platform', label: 'Platform' },

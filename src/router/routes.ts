@@ -7,18 +7,6 @@ export default [
       title: 'Autorizations',
       middleware: [`auth`]
     },
-    children: [
-      {
-        redirect: { name: '' },
-        name: 'code-to-token-mercado-livre',
-        path: 'meli',
-      },
-      {
-        redirect: { name: '' },
-        name: 'code-to-token-shopee',
-        path: 'shopee',
-      },
-    ]
   },
   {
     path: '/orders',

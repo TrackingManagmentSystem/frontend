@@ -21,7 +21,7 @@ declare module 'vue-router' {
 }
 
 router.beforeEach((to, from, next) => {
-  document.title = `Vue.js ${to.meta.title} | TailAdmin - Vue.js Tailwind CSS Dashboard Template`
+  document.title = `Vue.js ${to.meta.title} | Tracking Managment System`
   next()
 })
 
@@ -33,13 +33,26 @@ router.beforeEach(async ($to, $from, $next) => {
     $to.meta.middleware?.includes('auth') &&
     !isLogged
   ) {
-    // $next({
-    //   name: constants.routes.login.name,
-    //   query: { ...$to.query, redirectPath: $to.path }
-    // });
     $next({ name: 'Signin' });
     return;
   }
 
   $next()
+})
+
+router.beforeEach((to, from, next) => {
+  console.log('from :>> ', from);
+  console.log('from.name :>> ', from.name);
+  console.log('to :>> ', to);
+  console.log('to.query :>> ', to.query);
+  if (to.query.code) {
+    if (!from.name) {
+      const referrer = document.referrer;
+      if (referrer) {
+        console.log('External referrer:', referrer);
+        //   await authStore.parseCodeToAccessToken({ platform, params })
+      }
+    }
+  }
+  next()
 })
