@@ -27,6 +27,11 @@ router.beforeEach((to, from, next) => {
 
 router.beforeEach(async ($to, $from, $next) => {
   const { isLogged } = useAuthStore(Store);
+
+  if ($to.query.code && !isLogged) {
+    localStorage.setItem('callback-code', $to.query.code.toString());
+  }
+
   if (
     $to.meta &&
     $to.meta.middleware &&
@@ -41,9 +46,13 @@ router.beforeEach(async ($to, $from, $next) => {
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.query.code) {
+  if (
+    to.query.code ||
+    localStorage.getItem('callback-code')
+  ) {
     const authStore = useAuthStore(Store);
-    const platform = (to.query.code as string).startsWith('TG') ? 'mercado-livre' : 'shopee';
+    const code = to.query.code || localStorage.getItem('callback-code');
+    const platform = (code as string).startsWith('TG') ? 'mercado-livre' : 'shopee';
     await authStore.parseCodeToAccessToken({ platform, params: to.query });
   }
   next()

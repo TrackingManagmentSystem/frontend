@@ -7,10 +7,16 @@ export async function loadList(this: StateType) {
     await OrderRepository.fetchAll({
       include: 'buyer,seller,items,shipment'
     }).then(({ data }) => {
-      this.list = data.map(order => ({
-        ...order,
-        context: JSON.parse(order.context as string),
-      }));
+      this.list = data.map(order => {
+        let context = order.context;
+        try {
+          context = JSON.parse(order.context as string);
+        } catch (error) {}
+        return {
+          ...order,
+          context,
+        }
+      });
     })
   } catch (error) {
     console.log('error :>> ', error);

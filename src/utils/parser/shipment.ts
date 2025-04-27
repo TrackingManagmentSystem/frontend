@@ -157,13 +157,15 @@ const translateStatusHistoryLabel = (type: string): string => {
 }
 
 export const parseStatusHistory = (history: Shipment['statusHistory']) => {
-  return Object.entries(history)
+  return history
+  ? Object.entries(history)
     .filter(([label, _dateTime]) => label !== `id`)
     .map(([label, dateTime]) => ({
       date: dateTime ? parseDateTimeString(dateTime).date : null,
       time: dateTime ? parseDateTimeString(dateTime).time : null,
       label: translateStatusHistoryLabel(label),
     }))
+  : []
 }
 
 export const addressType = {
@@ -185,12 +187,14 @@ const translateAddressLabel = (type: string): string => {
 }
 
 export const parseAddress = (history: Shipment['receiverAddress']) => {
-  return Object.entries(history)
-    .filter(([label, _value]) => label in addressType)
-    .map(([label, value]) => ({
-      label: translateAddressLabel(label),
-      value,
-    }))
+  return history
+    ? Object.entries(history)
+      .filter(([label, _value]) => label in addressType)
+      .map(([label, value]) => ({
+        label: translateAddressLabel(label),
+        value,
+      }))
+    : []
 }
 
 export const translateLogistic = (type: string): string => {
@@ -233,7 +237,7 @@ export const parseShipment = (shipment: Shipment): ShipmentListItem => {
     seller: shipment.order.seller.nickname,
     receiver: {
       place: `${shipment.receiverAddress.cityName} ${shipment.receiverAddress.neighborhoodName}`,
-      estimatedDelivery: shipment.shippingOption.estimatedDeliveryTime.date
+      estimatedDelivery: shipment.shippingOption.estimatedDeliveryTime?.date
         ? parseDateTimeString(shipment.shippingOption.estimatedDeliveryTime.date)
         : '',
     },

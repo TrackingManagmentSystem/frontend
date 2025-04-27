@@ -11,6 +11,9 @@
           <template v-slot:empty-button>
             <Button size="sm" @click="handleSyncOrders">Sync Orders</Button>
           </template>
+          <template v-slot:table-title>
+            <Button size="xs"  @click="handleSyncOrders" :start-icon="RefreshIcon" />
+          </template>
           <template #cell-status="{ item }">
             <Badge color="info" no-break-line>
               {{ item }}
@@ -40,6 +43,7 @@ import { useOrderStore } from "@/store/order";
 import { useShipmentStore } from "@/store/shipment";
 import { storeToRefs } from "pinia";
 import PaginatedTable from "@/components/tables/PaginatedTable.vue";
+import RefreshIcon from '@/icons/RefreshIcon.vue';
 import type { Column } from "@/components/tables/types";
 import { computed } from "vue";
 import { parseDateTimeString } from "@/utils/parser";

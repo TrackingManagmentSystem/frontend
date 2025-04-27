@@ -6,7 +6,9 @@
     <OverlayLoading :show="props.loading">
       <div class="flex flex-col gap-5 px-6 mb-4 sm:flex-row sm:items-center sm:justify-between pt-4">
         <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-          {{ props.title }}
+          <slot name="table-title">
+            {{ props.title }}
+          </slot>
         </h3>
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
           <SearchBar />
