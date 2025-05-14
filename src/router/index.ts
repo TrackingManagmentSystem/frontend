@@ -30,6 +30,8 @@ router.beforeEach(async ($to, $from, $next) => {
 
   if ($to.query.code && !isLogged) {
     localStorage.setItem('callback-code', $to.query.code.toString());
+    localStorage.setItem('shop-id', $to.query.shop_id?.toString() || '');
+    localStorage.setItem('main-account-id', $to.query.main_account_id?.toString() || '');
   }
 
   if (

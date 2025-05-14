@@ -18,7 +18,7 @@
       <div class="max-w-full overflow-x-auto custom-scrollbar">
         <BaseTable :columns="props.columns" :items="props.items">
           <!-- @vue-ignore -->
-          <template v-for="slotName in $slots" v-slot:[slotName]="slotScope">
+          <template v-for="slotName in Object.keys($slots)" v-slot:[slotName]="slotScope">
             <slot :name="slotName" v-bind="slotScope" />
           </template>
         </BaseTable>
